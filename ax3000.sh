@@ -15,7 +15,7 @@ dump_mtd(){
 	nanddump -f /tmp/syslogbackup/bdata_mtd9.img /dev/mtd9
 	echo -e "${success_font} Done."
 	echo -e "${info_font} Now you can download it at:"
-	echo -e "          http://192.168.31.1/backup/log/bdata_mtd9.img"
+	echo -e "       http://192.168.31.1/backup/log/bdata_mtd9.img"
 }
 
 keep_script(){
