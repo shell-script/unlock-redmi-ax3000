@@ -77,6 +77,8 @@ case "$1" in
 	"unlock")
 		chmod 0755 /etc/fuckax3000
 		/etc/fuckax3000 unlock
+		echo -e "${info_font} After reboot, please run 'sh $0 hack' to get permanent Telnet/SSH access."
+		echo -e ""
 		echo -e "${warning_font} Your device should be rebooted automatically, if not, please do it manually."
 		;;
 	"dump")
