@@ -5,3 +5,4 @@
 
 ### SHA256SUM
 9e23df6dfef90a6eeb200ce16793f4a3baca0de664d709944263058df77646f8  fuckax3000
+f25660739ad3b44fe8230af1f7c5f9e8e2cd7f3c67c7576457cffcf5dbe8f108  miwifi_ra69_firmware_45a77_1.0.18.bin
