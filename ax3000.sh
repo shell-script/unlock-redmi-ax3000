@@ -20,7 +20,8 @@ dump_mtd(){
 
 keep_script(){
 	echo -e "${info_font} Creating keep.d for mounting script..."
-	cat > "/lib/upgrade/keep.d/miwifi_overlay" <<-EOF
+	sed -i "/miwifi_overlay/d" "/etc/sysupgrade.conf"
+	cat >> "/etc/sysupgrade.conf" <<-EOF
 		/etc/init.d/miwifi_overlay
 		/etc/rc.d/S00miwifi_overlay
 	EOF
@@ -65,6 +66,9 @@ mount_overlay(){
 	sync
 	echo -e "${success_font} Done."
 	echo -e "${info_font} After reboot, please run 'sh $0 keep' to keep these settings when upgrade."
+	echo -e ""
+	echo -e "${warning_font} Rebooting device..."
+	reboot
 }
 
 case "$1" in
