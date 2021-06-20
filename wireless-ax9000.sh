@@ -6,7 +6,6 @@
 #
 # Original thread: https://forum.openwrt.org/t/openwrt-support-for-xiaomi-ax9000/98908/34
 
-error_font="\033[31m[Error]\033[0m"
 info_font="\033[36m[Info]\033[0m"
 success_font="\033[32m[Success]\033[0m"
 warning_font="\033[33m[Warning]\033[0m"
@@ -47,25 +46,12 @@ function getToken()
 end
 EOF
 
-echo -e "${info_font} Detecting network specifications..."
-if iw dev wlan0 info >"/dev/null" 2>&1; then
-	wlan_band="$(iw dev wlan0 info | grep -Eo 'width:.[0-9]+' | awk '{print $2}')"
-	wlan_channel="$(iw dev wlan0 info | grep -Eo 'channel.[0-9]+' | awk '{print $2}')"
-	[ -z "${wlan_band}" ] || [ -z "${wlan_channel}" ] && {
-		echo -e "${error_font} Please launch the wireless firstly."
-		exit 1
-	}
-else
-	echo -e "${error_font} Device 'wlan0' is not found."
-	exit 1
-fi
-
 echo -e "${info_font} Changing network settings..."
 set -x
 uci set dhcp.lan.ignore='1'
 uci set network.lan.ipaddr='169.254.31.1'
 uci set wireless.@wifi-iface[0].ssid='MEDIATEK-ARM-IS-GREAT'
-uci set wireless.@wifi-iface[0].encryption='psk2+ccmp'
+uci set wireless.@wifi-iface[0].encryption='psk2'
 uci set wireless.@wifi-iface[0].key='ARE-YOU-OK'
 uci set wireless.@wifi-iface[0].mode='ap'
 uci set wireless.@wifi-iface[0].network='LAN lan'
@@ -75,7 +61,7 @@ set +x
 echo -e "${success_font} All settings are applied.\n"
 echo -e "${info_font} Please now disconnect from this router, and connect to your Xiaomi AX9000."
 echo -e "${info_font} Then open your browser, access the following URL:"
-echo -e "       http://192.168.31.1/cgi-bin/luci/;stok=<STOK>/api/xqsystem/extendwifi_connect_inited_router?ssid=MEDIATEK-ARM-IS-GREAT&password=ARE-YOU-OK&encryption=WPA2PSKenctype=CCMP&channel=${wlan_channel}&band=${wlan_band}&admin_username=root&admin_password=admin&admin_nonce=xxx"
+echo -e "       http://192.168.31.1/cgi-bin/luci/;stok=<STOK>/api/xqsystem/extendwifi_connect_inited_router?ssid=MEDIATEK-ARM-IS-GREAT&password=ARE-YOU-OK&admin_username=root&admin_password=admin&admin_nonce=xxx"
 echo -e "${info_font} If the return code is 0, now you can connect to your AX9000 via SSH."
 echo -e "${info_font} SSH login password is 5GHz wireless connection password."
 echo -e ""
