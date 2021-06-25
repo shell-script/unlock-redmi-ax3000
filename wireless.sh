@@ -17,7 +17,7 @@ echo -e "${warning_font} Please make sure your router has wireless support!"
 echo -e "${warning_font} Please make sure your router is restored to factory settings (not configured)!"
 echo -e "${warning_font} Please make sure you've backed up the network and wireless settings!"
 echo -e "${warning_font} Please make sure you've connected the router via *wired ethernet*!"
-echo -e "${warning_font} Running this script will change your *network* settings!"
+echo -e "${warning_font} Running this script may break your current *network* settings!"
 read -p "Use Ctrl+C to exit or press enter key to continue..."
 
 echo -e ""
@@ -51,13 +51,17 @@ EOF
 
 echo -e "${info_font} Changing network settings..."
 set -x
-uci set dhcp.lan.ignore='1'
-uci set network.lan.ipaddr='169.254.31.1'
-uci set wireless.@wifi-iface[0].ssid='MEDIATEK-ARM-IS-GREAT'
-uci set wireless.@wifi-iface[0].encryption='psk2'
-uci set wireless.@wifi-iface[0].key='ARE-YOU-OK'
-uci set wireless.@wifi-iface[0].mode='ap'
-uci set wireless.@wifi-iface[0].network='LAN lan'
+uci set network.ruok=interface
+uci set network.ruok.proto='static'
+uci set network.ruok.ipaddr='169.254.31.1'
+uci set dhcp.ruok.ignore='1'
+uci set wireless.hackmiwifi=wifi-iface
+uci set wireless.hackmiwifi.device="$(uci get wireless.@wifi-iface[0].device)"
+uci set wireless.hackmiwifi.ssid='MEDIATEK-ARM-IS-GREAT'
+uci set wireless.hackmiwifi.encryption='psk2'
+uci set wireless.hackmiwifi.key='ARE-YOU-OK'
+uci set wireless.hackmiwifi.mode='ap'
+uci set wireless.hackmiwifi.network='ruok'
 uci -q commit
 set +x
 
