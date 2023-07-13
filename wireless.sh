@@ -21,8 +21,10 @@ echo -e "${warning_font} Running this script will change your *network* settings
 read -p "Use Ctrl+C to exit or press enter key to continue..."
 
 echo -e ""
-echo -e "${info_font} Adding xqsystem controller..."
-cat > "/usr/lib/lua/luci/controller/admin/xqsystem.lua" <<EOF
+mkdir -p /usr/lib/lua/luci/controller/admin/
+if [ -f "/usr/lib/lua/luci/controller/admin/xqsystem.lua" ]; then
+    echo -e "${info_font} Adding xqsystem controller..."
+    cat > "/usr/lib/lua/luci/controller/admin/xqsystem.lua" <<EOF
 module("luci.controller.admin.xqsystem", package.seeall)
 
 function index()
@@ -48,6 +50,37 @@ function getToken()
     LuciHttp.write_json(result)
 end
 EOF
+    
+else
+    echo -e "${info_font} Creating xqsystem controller..."
+    touch /usr/lib/lua/luci/controller/admin/xqsystem.lua
+    cat > "/usr/lib/lua/luci/controller/admin/xqsystem.lua" <<EOF
+module("luci.controller.admin.xqsystem", package.seeall)
+
+function index()
+    local page   = node("api")
+    page.target  = firstchild()
+    page.title   = ("")
+    page.order   = 100
+    page.index = true
+    page   = node("api","xqsystem")
+    page.target  = firstchild()
+    page.title   = ("")
+    page.order   = 100
+    page.index = true
+    entry({"api", "xqsystem", "token"}, call("getToken"), (""), 103, 0x08)
+end
+
+local LuciHttp = require("luci.http")
+
+function getToken()
+    local result = {}
+    result["code"] = 0
+    result["token"] = "; nvram set ssh_en=1; nvram set uart_en=1; nvram set boot_wait=on; nvram commit; uci set wireless.@wifi-iface[0].key=\`mkxqimage -I\`; uci commit; sed -i 's/channel=.*/channel=\"debug\"/g' /etc/init.d/dropbear; /etc/init.d/dropbear start;"
+    LuciHttp.write_json(result)
+end
+EOF
+fi
 
 echo -e "${info_font} Changing network settings..."
 set -x
