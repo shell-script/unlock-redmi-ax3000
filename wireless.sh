@@ -22,6 +22,7 @@ read -p "Use Ctrl+C to exit or press enter key to continue..."
 
 echo -e ""
 echo -e "${info_font} Adding xqsystem controller..."
+mkdir -p "/usr/lib/lua/luci/controller/admin"
 cat > "/usr/lib/lua/luci/controller/admin/xqsystem.lua" <<EOF
 module("luci.controller.admin.xqsystem", package.seeall)
 
