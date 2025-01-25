@@ -1,5 +1,5 @@
 ### How to use
-- [红米 AX3000 \(AX6\) 解锁 SSH 教程](https://xn--m80a.ml/openwrt/dev/10.html)
+- [红米 AX3000 \(AX6\) 解锁 SSH 教程](https://github.com/1715173329/blog/issues/2)
 
 ### Reference
 - [\[原创\]红米AX6 SSH解锁和挂载overlay方法](https://www.right.com.cn/forum/thread-4060726-1-1.html)
